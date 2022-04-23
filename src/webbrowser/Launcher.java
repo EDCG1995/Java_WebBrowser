@@ -16,7 +16,6 @@ import javax.swing.*;
 public class Launcher extends JFrame {
 	private static Launcher instance = new Launcher();
 	private JComboBox<Locale> localeComboBox;
-
 	private Launcher() {
 		super("Browser Launcher");
 		localeComboBox = new JComboBox<Locale>();

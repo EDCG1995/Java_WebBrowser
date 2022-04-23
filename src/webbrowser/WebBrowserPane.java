@@ -4,10 +4,12 @@ import java.net.*;
 import java.util.*;
 import javax.swing.*;
 
+
 public class WebBrowserPane extends JEditorPane {
 
 	private List<URL> history = new ArrayList<URL>();
 	private int historyIndex;
+
 	
 	public WebBrowserPane() {
 		setEditable(false);
@@ -15,10 +17,11 @@ public class WebBrowserPane extends JEditorPane {
 	public void goToUrl(URL url) {
 		displayPage(url);
 		history.add(url);
+	
 		historyIndex = history.size()-1;
 	}
 	
-	public URL forward() {
+	public URL forward() {			
 		historyIndex++;
 		if(historyIndex >= history.size()) 
 			historyIndex = history.size()-1;
@@ -43,6 +46,7 @@ public class WebBrowserPane extends JEditorPane {
 			e.printStackTrace();
 		}
 	}
+	
 	
 	public WebBrowserPane(URL initialPage) throws IOException {
 		super(initialPage);

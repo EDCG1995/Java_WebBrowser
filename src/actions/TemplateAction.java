@@ -3,12 +3,16 @@ package actions;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-
-public abstract class MyAbstractAction extends AbstractAction {
+/**
+ * 
+ * Template action uses the Template design pattern by creating an Abstract class and leaving actionPerformed abstract to be implemented into a subclass 
+ *
+ */
+public abstract class TemplateAction extends AbstractAction {
 	
-	public MyAbstractAction() {}
+	public TemplateAction() {}
 	
-	public MyAbstractAction(String name, Icon icon, String description, Integer mnemonic) {
+	public TemplateAction(String name, Icon icon, String description, Integer mnemonic) {
 	 setName(name);
 	 setSmallIcon(icon);
 	 setShortDescription(description);

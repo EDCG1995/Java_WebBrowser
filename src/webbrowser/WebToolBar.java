@@ -4,25 +4,29 @@ import java.awt.event.*;
 import java.net.*;
 import java.util.Locale;
 import java.util.ResourceBundle;
-
 import javax.swing.*;
 import javax.swing.event.*;
-
-import actions.MyAbstractAction;
+import actions.HighlightDecorator;
+import actions.TemplateAction;
+import history.Editor;
+import history.History;
 
 public class WebToolBar extends JToolBar implements HyperlinkListener {
 	
 	private WebBrowserPane webBrowserPane;
-	private JButton backButton;
-	private JButton forwardButton;
+	private JButton backButton = new JButton(new ImageIcon(getClass().getResource("images/left.png")));
+	private JButton forwardButton = new JButton(new ImageIcon(getClass().getResource("images/right.png")));
+	private JButton historyButton = new JButton(new ImageIcon(getClass().getResource("images/historyicon.png")));
 	private JTextField urlTextField;
+	
 
 	public WebToolBar(WebBrowserPane browser, Locale locale) throws MalformedURLException {
 		ResourceBundle resources = ResourceBundle.getBundle("locales.Strings&Labels", locale);
 		setName(resources.getString("toolbarTitle"));
 		webBrowserPane = browser;
 		webBrowserPane.addHyperlinkListener(this);
-		
+		var editor = new Editor();
+		var history = new History();
 		urlTextField = new JTextField(25);
 		urlTextField.addActionListener(new ActionListener() {
 			
@@ -31,35 +35,59 @@ public class WebToolBar extends JToolBar implements HyperlinkListener {
 				try {
 					URL url = new URL(urlTextField.getText());
 					webBrowserPane.goToUrl(url);
+					editor.setContent(url.toString());
+					history.push(editor.createEditorState());
 				}catch (MalformedURLException urlException) {
 					urlException.printStackTrace();
 				}
 			}
 		});
-		MyAbstractAction backAction = new MyAbstractAction() {
+		TemplateAction backAction = new TemplateAction() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				URL url = webBrowserPane.back();
-				urlTextField.setText(url.toString());
+				try {
+					URL url = webBrowserPane.back();
+					urlTextField.setText(url.toString());	
+				} catch (Exception e2) {
+					System.out.println("404");
+				}
+				
 			}
 		};
-		backAction.setSmallIcon(new ImageIcon(getClass().getResource("images/left.png")));
 		backAction.setShortDescription(resources.getString("backToolTip"));
 		
-		MyAbstractAction forwardAction = new MyAbstractAction() {
+		TemplateAction forwardAction = new TemplateAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				URL url = webBrowserPane.forward();
-				urlTextField.setText(url.toString());
-			}
+				try {
+					URL url = webBrowserPane.forward();
+					urlTextField.setText(url.toString());
+					
+				} catch (Exception e2) {
+				System.out.println("404");
+				}
+				}
 		};
-		forwardAction.setSmallIcon(new ImageIcon(getClass().getResource("images/right.png")));
 		forwardAction.setShortDescription(resources.getString("forwardToolTip"));
 		
-		add(backAction);
-		add(forwardAction);
+		TemplateAction historyAction = new TemplateAction() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(browser, history.toString());
+				
+				
+			}
+		};
+		historyAction.setName("history");
+		backButton.addActionListener(backAction);
+		forwardButton.addActionListener(forwardAction);
+		historyButton.addActionListener(historyAction);
+		add(new HighlightDecorator(backButton) );
+		add(new HighlightDecorator(forwardButton) );
 		add(urlTextField);
+		add(historyButton);
 		
 	}
 
