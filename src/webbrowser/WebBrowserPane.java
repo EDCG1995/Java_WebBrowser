@@ -3,11 +3,14 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import javax.swing.*;
+import history.Editor;
+import history.History;
 
 
 public class WebBrowserPane extends JEditorPane {
-
-	private List<URL> history = new ArrayList<URL>();
+	private History historial = new History();
+	private Editor editor = new Editor();
+	private List<URL> history = new ArrayList<URL>();//needs to be refactored for memento
 	private int historyIndex;
 
 	
@@ -17,7 +20,6 @@ public class WebBrowserPane extends JEditorPane {
 	public void goToUrl(URL url) {
 		displayPage(url);
 		history.add(url);
-	
 		historyIndex = history.size()-1;
 	}
 	

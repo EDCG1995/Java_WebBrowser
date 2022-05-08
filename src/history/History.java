@@ -1,8 +1,11 @@
 package history;
 
 import java.util.*;
+import java.text.SimpleDateFormat;  
+import java.util.Date;  
 
 public class History {
+	SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	private List<EditorState> states = new ArrayList<EditorState>();
  
 	public void push(EditorState state) {
@@ -22,8 +25,9 @@ public class History {
 	public String toString() {
 		String websites="";
 		if(!states.isEmpty()) {
-			for(int i =0; i< states.size()-1; i++) {
-				websites+= states.get(i).getContent()+"\n";
+			websites="Pages visited: \n\n";
+			for(int i =0; i<= states.size()-1; i++) {
+				websites+= states.get(i).getContent().toString()+" at "+new Date().toString()+"\n";
 			}
 			return websites;
 		}

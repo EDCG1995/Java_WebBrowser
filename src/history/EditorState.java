@@ -1,12 +1,14 @@
 package history;
 
+import java.net.URL;
+
 public class EditorState {
-	private final String content;
+	private final URL content;
 	
-	public EditorState(String content) {
+	public EditorState(URL content) {
 		this.content = content;
 	}
-	public String getContent() {
+	public URL getContent() {
 		return content;
 	}
 }

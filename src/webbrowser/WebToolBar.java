@@ -35,7 +35,7 @@ public class WebToolBar extends JToolBar implements HyperlinkListener {
 				try {
 					URL url = new URL(urlTextField.getText());
 					webBrowserPane.goToUrl(url);
-					editor.setContent(url.toString());
+					editor.setContent(url);
 					history.push(editor.createEditorState());
 				}catch (MalformedURLException urlException) {
 					urlException.printStackTrace();
